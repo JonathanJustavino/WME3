@@ -6,6 +6,7 @@ var sys = require('util');
 var path = require('path');
 var bodyParser = require('body-parser');
 var Converter = require("csvtojson").Converter;
+var jsonFile = {};
 
 //register body-parser to handle json from res / req
 app.use( bodyParser.json() );
@@ -24,18 +25,23 @@ var converter = new Converter({});
 
 //end_parsed will be emitted once parsing finished
 converter.on("end_parsed", function(jsonArray){
+   jsonFile = jsonArray;
   //the parsed jsonArray
-  console.log(jsonArray);
+  console.log(jsonFile);
 });
 
 //read from file
 require("fs").createReadStream("./world_data.csv").pipe(converter);
 
 
+/**************************************************************************
+********************** handle HTTP METHODS ***********************
+**************************************************************************/
+
 
 
 /**************************************************************************
-********************** handle HTTP METHODS ***********************
+***************************************************************************
 **************************************************************************/
 
 
