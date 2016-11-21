@@ -19,8 +19,17 @@ app.use( express.static( path.join(__dirname, "public") ) );
 /**************************************************************************
 ****************************** csv2json *********************************
 **************************************************************************/
+//Converter Class
+var converter = new Converter({});
 
+//end_parsed will be emitted once parsing finished
+converter.on("end_parsed", function(jsonArray){
+  //the parsed jsonArray
+  console.log(jsonArray);
+});
 
+//read from file
+require("fs").createReadStream("./world_data.csv").pipe(converter);
 
 
 
