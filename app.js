@@ -37,6 +37,30 @@ require("fs").createReadStream("./world_data.csv").pipe(converter);
 /**************************************************************************
 ********************** handle HTTP METHODS ***********************
 **************************************************************************/
+/**
+ * returning all items from the jsonFile
+ */
+app.get('/items', function(req, res){
+  res.send(jsonFile);
+});
+
+/**
+ * searching for a given id in the jsonFile
+ */
+app.get('/items/:id', function(req, res){
+  var id = req.params.id;
+  if(id > jsonFile.length){
+      res.send('No such id ' + id + ' in database');
+  }
+  if(id == jsonFile[id-1].id){
+    res.send(jsonFile[id-1]);
+  }
+
+});
+
+
+//returning only one country specified by the id
+
 
 
 
