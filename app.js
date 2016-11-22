@@ -27,7 +27,7 @@ var converter = new Converter({});
 converter.on("end_parsed", function(jsonArray){
    jsonFile = jsonArray;
   //the parsed jsonArray
-  //console.log(jsonFile);
+  // console.log(jsonFile);
   console.log('parsed csv');
 });
 
@@ -126,6 +126,17 @@ app.get('/properties/:num', function(req, res){
 
 /******************************Post Requests******************************/
 
+app.post('/items', function(req, res){
+  var name =  req.params.name;
+  var birthRate = req.params.birthrate;
+  var cellphones = req.params.cellphones;
+  var obj = {
+    'name': name,
+    'birth_rate': birthRate,
+    'cellphones': cellphones
+  }
+  console.console.log(obj);
+});
 
 /*****************************Delete Requests*****************************/
 

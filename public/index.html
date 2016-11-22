@@ -53,14 +53,14 @@
 					<form name="country_filter" id="country_filter" method="GET">
 						<p>
 							<label for="country_filter_id">country id</label>
-							<input type="text" name="country_filter_id" id="country_filter_id">
+							<input type="text" name="country_filter_id" id="country_filter_id" onclick="filterCountries()">
 						</p>
 						<p>
 							<label for="country_filter_range">country id range (eg: 2-5)</label>
 							<input type="text" name="country_filter_range" id="country_filter_range">
 						</p>
 						<p class="submit">
-							<input type="submit" name="submit" id="add_submit" value="Filter Countries">
+							<input type="submit" name="submit" id="add_submit" value="Filter Countries" onclick="filterCountries()">
 						</p>
 					</form>
 				</div>
@@ -68,11 +68,11 @@
 			<div class="rest-prop">
 				<div class="rest-api-block">
 					<h2>Properties</h2>
-					<select id="prop_selection">
+					<select id="prop_selection" onclick="properties()">
 						<!--load options via ajax-->
 					</select>
-					<button class="green_btn" id="show_selected_prop">Show</button>
-					<button class="green_btn" id="hide_selected_prop">Hide</button>
+					<button class="green_btn" id="show_selected_prop" onclick="showProperties()">Show</button>
+					<button class="green_btn" id="hide_selected_prop" onclick="hideProperties()">Hide</button>
 				</div>
 			</div>
 			<div class="rest-add">
@@ -92,7 +92,7 @@
 							<input type="number" name="country_cellphone" id="country_cellphone">
 						</p>
 						<p class="submit">
-							<input type="submit" name="submit" id="add_submit" value="Add Country">
+							<input type="submit" name="submit" id="add_submit" value="Add Country" onclick="addCountry()">
 						</p>
 					</form>
 				</div>
@@ -106,7 +106,7 @@
 							<input type="text" name="country_delete_id" id="country_delete_id">
 						</p>
 						<p class="submit">
-							<input type="submit" name="submit" id="rm_submit" value="Remove Country">
+							<input type="submit" name="submit" id="rm_submit" value="Remove Country" onclick="deleteCountry()">
 						</p>
 					</form>
 				</div>
