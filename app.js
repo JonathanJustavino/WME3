@@ -43,6 +43,7 @@ require("fs").createReadStream("./world_data.csv").pipe(converter);
 
 /**
  * returning all items from the jsonFile
+ * @type {GET}
  */
 app.get('/items', function(req, res){
   res.send(jsonFile);
@@ -50,6 +51,7 @@ app.get('/items', function(req, res){
 
 /**
  * get request with an id
+ * @type {GET}
  */
 app.get('/items/:id', function(req, res){
   var id = req.params.id;
@@ -63,6 +65,7 @@ app.get('/items/:id', function(req, res){
 
 /**
  * get request for a range between two ids
+ * @type {GET}
  */
 app.get('/items/:id1/:id2', function(req, res){
     var id1 = req.params.id1;
@@ -89,6 +92,7 @@ app.get('/items/:id1/:id2', function(req, res){
 
 /**
  * get request for all properties
+ * @type {GET}
  */
 app.get('/properties', function(req, res){
   var props = [];
@@ -103,6 +107,7 @@ app.get('/properties', function(req, res){
 
 /**
  * get request for the n-th property
+ * @type {GET}
  */
 app.get('/properties/:num', function(req, res){
   var props = [];
@@ -116,19 +121,39 @@ app.get('/properties/:num', function(req, res){
     res.send('No such property available!');
   }
   res.send(props[req.params.num]);
-
 });
+
 
 /******************************Post Requests******************************/
 
 
 /*****************************Delete Requests*****************************/
 
-
-app.delete('/items', function(){
+/**
+ * Deletes the last element of the array
+ * @type {DELETE}
+ */
+app.delete('/items', function(req, res){
   var deleted = jsonFile.pop();
   res.send('Deleted last country ' + deleted.name);
 });
+
+/**
+ * Deleting an element by the id
+ * @type {DELTE}
+ */
+app.delete('/items/:id', function(req, res){
+  var id = parseInt(req.params.id);
+  console.log(id);
+  for(var i = 0; i < jsonFile.length; i++){
+    console.log(id == jsonFile[i].id);
+    if(id === jsonFile[i].id){
+      jsonFile.splice(i, 1);
+    }
+  }
+  res.send(jsonFile);
+});
+
 
 
 
