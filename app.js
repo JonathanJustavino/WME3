@@ -27,7 +27,8 @@ var converter = new Converter({});
 converter.on("end_parsed", function(jsonArray){
    jsonFile = jsonArray;
   //the parsed jsonArray
-  console.log(jsonFile);
+  //console.log(jsonFile);
+  console.log('parsed csv');
 });
 
 //read from file
@@ -37,6 +38,9 @@ require("fs").createReadStream("./world_data.csv").pipe(converter);
 /**************************************************************************
 ********************** handle HTTP METHODS ***********************
 **************************************************************************/
+
+/*******************************Get Requests*******************************/
+
 /**
  * returning all items from the jsonFile
  */
@@ -45,21 +49,86 @@ app.get('/items', function(req, res){
 });
 
 /**
- * searching for a given id in the jsonFile
+ * get request with an id
  */
 app.get('/items/:id', function(req, res){
   var id = req.params.id;
   if(id > jsonFile.length){
-      res.send('No such id ' + id + ' in database');
+      res.send('No such id: ' + id + ' in database');
   }
   if(id == jsonFile[id-1].id){
     res.send(jsonFile[id-1]);
   }
+});
 
+/**
+ * get request for a range between two ids
+ */
+app.get('/items/:id1/:id2', function(req, res){
+    var id1 = req.params.id1;
+    var id2 = req.params.id2;
+
+    //TODO not right comparison result if id2 is > 9
+    if(parseInt(req.params.id1) > parseInt(req.params.id2)){
+      res.send('Range not possible!');
+    }
+
+    if(id1 > jsonFile.length || id2 > jsonFile.length){
+      res.send('Range not possible!');
+    }
+
+    var items = [];
+    for(var i = 0; i < jsonFile.length; i++){
+      var fileID = jsonFile[i].id;
+      if(id1 <= fileID && id2 >= fileID){
+        items.push(jsonFile[i]);
+      }
+    }
+    res.send(items);
+});
+
+/**
+ * get request for all properties
+ */
+app.get('/properties', function(req, res){
+  var props = [];
+  for (var key in jsonFile[0]) {
+    if (jsonFile[0].hasOwnProperty(key)) {
+      props.push(key);
+    }
+  }
+  res.send(props);
 });
 
 
-//returning only one country specified by the id
+/**
+ * get request for the n-th property
+ */
+app.get('/properties/:num', function(req, res){
+  var props = [];
+  for (var key in jsonFile[0]) {
+    if (jsonFile[0].hasOwnProperty(key)) {
+      props.push(key);
+    }
+
+  }
+  if(req.params.num > props.length){
+    res.send('No such property available!');
+  }
+  res.send(props[req.params.num]);
+
+});
+
+/******************************Post Requests******************************/
+
+
+/*****************************Delete Requests*****************************/
+
+
+app.delete('/items', function(){
+  var deleted = jsonFile.pop();
+  res.send('Deleted last country ' + deleted.name);
+});
 
 
 
