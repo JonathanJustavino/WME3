@@ -36,7 +36,7 @@ require("fs").createReadStream("./world_data.csv").pipe(converter);
 
 
 /**************************************************************************
-********************** handle HTTP METHODS ***********************
+********************** handle HTTP METHODS ********************************
 **************************************************************************/
 
 /*******************************Get Requests*******************************/
@@ -71,7 +71,6 @@ app.get('/items/:id1/:id2', function(req, res){
     var id1 = req.params.id1;
     var id2 = req.params.id2;
 
-    //TODO not right comparison result if id2 is > 9
     if(parseInt(req.params.id1) > parseInt(req.params.id2)){
       res.send('Range not possible!');
     }
