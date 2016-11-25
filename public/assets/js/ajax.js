@@ -18,31 +18,54 @@ $(document).ready(
       fillTable(countries);
     },
     error:function(data){
-      console.log('nee');
+      errorOccured();
     }
   })
 );
 
+$(document).ready(
+  properties()
+);
 
 $('#add_submit').click(function(event){
   event.preventDefault()
+  var id = $('country_filter_id').val();
+  console.log(id);
+  // $.ajax({
+  //   type: 'GET',
+  //   url: '/items' ,
+  //   success:function(data){
+  //     console.log(id);
+  //   },
+  //   error:function(data){
+  //     console.log('nee');
+  //   }
+  // })
+})
 
-  var id;
+function properties(){
   $.ajax({
     type: 'GET',
-    url: '/items' ,
-    success:function(data){
-      console.log(data);
-    },
-    error:function(data){
-      console.log('nee');
-    }
+    url: '/properties',
+    success:function(properties){
+      var select = $('#prop_selection');
+      select.empty();
+      for (var i = 0; i < properties.length; i++) {
+          var element = $('<option>' + properties[i] + '</option>');
+          select.append(element);
+        }
+      }
   })
-})
+}
 
 
 function showProperties(){
-  alert('showing the properties');
+  $.ajax({
+    type: 'GET',
+    url: '/properties',
+    success:function(properties){
+    }
+  })
 };
 
 function hideProperties(){
@@ -70,4 +93,9 @@ function fillTable(countries){
     }
     table.append(tr);
   }
+}
+
+function errorOccured(){
+  var table = $('table_body');
+  var message = $('<tr><td>An Error has occured please try again later.</td></tr>');
 }
