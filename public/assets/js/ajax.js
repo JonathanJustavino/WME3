@@ -62,14 +62,21 @@ function properties(){
 function showProperties(){
   $.ajax({
     type: 'GET',
-    url: '/properties',
-    success:function(properties){
+    url: '/items',
+    success:function(items){
+      var propValue = $('#prop_selection').val();
     }
   })
 };
 
 function hideProperties(){
-  alert('hiding the properties');
+  $.ajax({
+    type: 'GET',
+    url: '/items',
+    success:function(items){
+
+    }
+  })
 };
 
 function addCountry(){
@@ -89,7 +96,8 @@ function fillTable(countries){
       var columnName = COUNTRY_COLUMN_KEYS[colidx];
       var country = countries[rowidx];
       var value = country[columnName];
-      tr.append('<td>' + value + '</td>')
+      var td = $('<td>' + value + '</td>').addClass(columnName);
+      tr.append(td)
     }
     table.append(tr);
   }
