@@ -61,23 +61,19 @@ function properties(){
 
 
 function showProperties(){
-  $.ajax({
-    type: 'GET',
-    url: '/items',
-    success:function(items){
-      var propValue = $('#prop_selection').val();
-    }
-  })
+  var propValue = $('#prop_selection').val().replace(/ /g, "");
+  var column = $('.' + propValue)
+  for(var i = 0; i < column.length; i++){
+    $(column[i]).show();
+  }
 };
 
 function hideProperties(){
-  var tableHead = $('#table_head').children();
   var propValue = $('#prop_selection').val().replace(/ /g, "");
   var column = $('.' + propValue)
   for(var i = 0; i < column.length; i++){
     $(column[i]).hide();
   }
-
 };
 
 function addCountry(){
