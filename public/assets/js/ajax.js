@@ -16,6 +16,7 @@ $(document).ready(
     url: '/items',
     success:function(countries){
       fillTable(countries);
+      applyTableHeadClasses();
     },
     error:function(data){
       errorOccured();
@@ -70,13 +71,13 @@ function showProperties(){
 };
 
 function hideProperties(){
-  $.ajax({
-    type: 'GET',
-    url: '/items',
-    success:function(items){
+  var tableHead = $('#table_head').children();
+  var propValue = $('#prop_selection').val().replace(/ /g, "");
+  var column = $('.' + propValue)
+  for(var i = 0; i < column.length; i++){
+    $(column[i]).hide();
+  }
 
-    }
-  })
 };
 
 function addCountry(){
@@ -96,10 +97,17 @@ function fillTable(countries){
       var columnName = COUNTRY_COLUMN_KEYS[colidx];
       var country = countries[rowidx];
       var value = country[columnName];
-      var td = $('<td>' + value + '</td>').addClass(columnName);
-      tr.append(td)
+      var td = $('<td>' + value + '</td>').addClass(columnName.replace(/ /g, ""));
+      tr.append(td);
     }
     table.append(tr);
+  }
+}
+
+function applyTableHeadClasses(){
+  var thead = $('#table_head').children();
+  for(var i = 0; i < COUNTRY_COLUMN_KEYS.length; i++){
+    thead[i].className = COUNTRY_COLUMN_KEYS[i].replace(/ /g, "");
   }
 }
 
