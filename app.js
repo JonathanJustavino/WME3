@@ -126,16 +126,11 @@ app.get('/properties/:num', function(req, res){
 /******************************Post Requests******************************/
 
 app.post('/items', function(req, res){
-  var name =  req.query.name;
-  var birthRate = req.query.birthrate;
-  var cellphones = req.query.cellphones;
-  var obj = {
-    'name': name,
-    'birth_rate': birthRate,
-    'cellphones': cellphones
+  if(Object.keys(req.body).length === 3 && req.body.name){
+    jsonFile.push(req.body);
+    res.send({status: 'Added country ' + req.body.name + ' to list'});
   }
-  // console.log(req.body);
-  console.log(obj);
+  console.log(req.body);
 });
 
 /*****************************Delete Requests*****************************/
@@ -146,18 +141,16 @@ app.post('/items', function(req, res){
  */
 app.delete('/items', function(req, res){
   var deleted = jsonFile.pop();
-  res.send('Deleted last country ' + deleted.name);
+  res.send(jsonFile);
 });
 
 /**
  * Deleting an element by the id
- * @type {DELTE}
+ * @type {DELETE}
  */
 app.delete('/items/:id', function(req, res){
   var id = parseInt(req.params.id);
-  console.log(id);
   for(var i = 0; i < jsonFile.length; i++){
-    console.log(id == jsonFile[i].id);
     if(id === jsonFile[i].id){
       jsonFile.splice(i, 1);
     }

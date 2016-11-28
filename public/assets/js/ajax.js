@@ -94,12 +94,86 @@ function hideProperties(){
 
 
 function addCountry(){
-  alert('added the country');
+  var name = $('#country_name').val();
+  var brithRate = $('#country_birth').val();
+  var cellphone = $('#country_cellphone').val();
+
+  $.ajax({
+    type: 'POST',
+    url: '/items',
+    data: {"name": name, "brithRate": birthRate, "cellphone": cellphone},
+    success:function(countries){
+      console.log(data);
+      // fillTable(countries);
+    },
+    error:function(){
+
+    }
+  })
 };
 
 
+$('#rm_submit').click(function(event){
+  event.preventDefault();
+  var countryID = $('#country_delete_id').val();
+  if(countryID.length !== 0){
+    $.ajax({
+      type: 'DELETE',
+      url: '/items/' + countryID,
+      dataType: 'json',
+      success:function(countries){
+        console.log(countryID);
+        fillTable(countries);
+      },
+      error:function(countries){
+        errorOccured();
+      }
+    })
+  }
+  else{
+    $.ajax({
+      type: 'DELETE',
+      url: '/items',
+      dataType: 'json',
+      success:function(countries){
+        fillTable(countries);
+      },
+      error:function(countries){
+        errorOccured();
+      }
+    })
+  }
+})
+
+//TODO deleting twice but should only delete once
 function deleteCountry(){
-  alert('deleted the country');
+  var countryID = $('#country_delete_id').val();
+  if(countryID.length !== 0){
+    $.ajax({
+      type: 'DELETE',
+      url: '/items/' + countryID,
+      dataType: 'json',
+      success:function(countries){
+        fillTable(countries);
+      },
+      error:function(countries){
+        errorOccured();
+      }
+    })
+  }
+  else{
+    $.ajax({
+      type: 'DELETE',
+      url: '/items',
+      dataType: 'json',
+      success:function(countries){
+        fillTable(countries);
+      },
+      error:function(countries){
+        errorOccured();
+      }
+    })
+  }
 };
 
 
