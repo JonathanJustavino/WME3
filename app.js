@@ -126,15 +126,16 @@ app.get('/properties/:num', function(req, res){
 /******************************Post Requests******************************/
 
 app.post('/items', function(req, res){
-  var name =  req.params.name;
-  var birthRate = req.params.birthrate;
-  var cellphones = req.params.cellphones;
+  var name =  req.query.name;
+  var birthRate = req.query.birthrate;
+  var cellphones = req.query.cellphones;
   var obj = {
     'name': name,
     'birth_rate': birthRate,
     'cellphones': cellphones
   }
-  console.console.log(obj);
+  // console.log(req.body);
+  console.log(obj);
 });
 
 /*****************************Delete Requests*****************************/
