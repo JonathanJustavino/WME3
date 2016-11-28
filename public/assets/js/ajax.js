@@ -116,24 +116,14 @@ function addCountry(){
 $('#rm_submit').click(function(event){
   event.preventDefault();
   var countryID = $('#country_delete_id').val();
+  var request = '/items'
   if(countryID.length !== 0){
-    $.ajax({
-      type: 'DELETE',
-      url: '/items/' + countryID,
-      dataType: 'json',
-      success:function(countries){
-        console.log(countryID);
-        fillTable(countries);
-      },
-      error:function(countries){
-        errorOccured();
-      }
-    })
+    request += '/' + countryID
+    console.log(request);
   }
-  else{
     $.ajax({
       type: 'DELETE',
-      url: '/items',
+      url: request,
       dataType: 'json',
       success:function(countries){
         fillTable(countries);
@@ -142,39 +132,7 @@ $('#rm_submit').click(function(event){
         errorOccured();
       }
     })
-  }
 })
-
-//TODO deleting twice but should only delete once
-function deleteCountry(){
-  var countryID = $('#country_delete_id').val();
-  if(countryID.length !== 0){
-    $.ajax({
-      type: 'DELETE',
-      url: '/items/' + countryID,
-      dataType: 'json',
-      success:function(countries){
-        fillTable(countries);
-      },
-      error:function(countries){
-        errorOccured();
-      }
-    })
-  }
-  else{
-    $.ajax({
-      type: 'DELETE',
-      url: '/items',
-      dataType: 'json',
-      success:function(countries){
-        fillTable(countries);
-      },
-      error:function(countries){
-        errorOccured();
-      }
-    })
-  }
-};
 
 
 function fillTable(countries){
