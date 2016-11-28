@@ -1,5 +1,3 @@
-//alert("No ajax calls implemented ;)");
-
 var COUNTRY_COLUMN_KEYS = [
   'id',
   'name',
@@ -10,6 +8,7 @@ var COUNTRY_COLUMN_KEYS = [
   'internet user per 100'
  ]
 
+
 $(document).ready(
   $.ajax({
     type: 'GET',
@@ -17,32 +16,48 @@ $(document).ready(
     success:function(countries){
       fillTable(countries);
       applyTableHeadClasses();
+      properties();
     },
-    error:function(data){
+    error:function(countries){
       errorOccured();
     }
   })
 );
 
-$(document).ready(
-  properties()
-);
 
 $('#add_submit').click(function(event){
   event.preventDefault()
-  var id = $('country_filter_id').val();
-  console.log(id);
-  // $.ajax({
-  //   type: 'GET',
-  //   url: '/items' ,
-  //   success:function(data){
-  //     console.log(id);
-  //   },
-  //   error:function(data){
-  //     console.log('nee');
-  //   }
-  // })
+  var id = $('#country_filter_id')[0].value;
+  var idRange = $('#country_filter_range')[0].value.split('-');
+  if(id.length === 0 && idRange.length === 0){
+    alert('Nothing happened');
+    return;
+  }
+  if(id.length !== 0){
+    $.ajax({
+      type: 'GET',
+      url: '/items/' + id,
+      success:function(countries){
+        fillTable([countries]);
+      },
+      error:function(countries){
+        errorOccured();
+      }
+    })
+    return;
+  }
+  $.ajax({
+      type: 'GET',
+      url: '/items/' + idRange[0] + '/' + idRange[1],
+      success:function(countries){
+        fillTable(countries);
+      },
+      error:function(countries){
+        errorOccured;
+      }
+  })
 })
+
 
 function properties(){
   $.ajax({
@@ -68,6 +83,7 @@ function showProperties(){
   }
 };
 
+
 function hideProperties(){
   var propValue = $('#prop_selection').val().replace(/ /g, "");
   var column = $('.' + propValue)
@@ -76,13 +92,16 @@ function hideProperties(){
   }
 };
 
+
 function addCountry(){
   alert('added the country');
 };
 
+
 function deleteCountry(){
   alert('deleted the country');
 };
+
 
 function fillTable(countries){
   var table = $('#table_body');
@@ -98,16 +117,18 @@ function fillTable(countries){
     }
     table.append(tr);
   }
-}
+};
+
 
 function applyTableHeadClasses(){
   var thead = $('#table_head').children();
   for(var i = 0; i < COUNTRY_COLUMN_KEYS.length; i++){
     thead[i].className = COUNTRY_COLUMN_KEYS[i].replace(/ /g, "");
   }
-}
+};
+
 
 function errorOccured(){
   var table = $('table_body');
   var message = $('<tr><td>An Error has occured please try again later.</td></tr>');
-}
+};
