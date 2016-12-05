@@ -141,7 +141,7 @@ app.post('/items', function(req, res){
  */
 app.delete('/items', function(req, res){
   var deleted = jsonFile.pop();
-  res.send(jsonFile);
+  res.send({status: 'Deleted last country: ' + deleted.name + '!'});
 });
 
 /**
@@ -150,12 +150,16 @@ app.delete('/items', function(req, res){
  */
 app.delete('/items/:id', function(req, res){
   var id = parseInt(req.params.id);
+  if(id > jsonFile.length || jsonFile[id-1].id !== id){
+    res.send({status: 'No such id ' + id + ' in database'});
+    return;
+  }
   for(var i = 0; i < jsonFile.length; i++){
     if(id === jsonFile[i].id){
       jsonFile.splice(i, 1);
     }
   }
-  res.send(jsonFile);
+  res.send({status: 'Item ' + id + ' deleted successfully'});
 });
 
 
