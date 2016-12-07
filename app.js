@@ -26,6 +26,7 @@ var converter = new Converter({});
 //end_parsed will be emitted once parsing finished
 converter.on("end_parsed", function(jsonArray){
    jsonFile = jsonArray;
+
   //the parsed jsonArray
   // console.log(jsonFile);
   console.log('parsed csv');
@@ -71,12 +72,9 @@ app.get('/items/:id1/:id2', function(req, res){
     var id1 = req.params.id1;
     var id2 = req.params.id2;
 
-    if(parseInt(req.params.id1) > parseInt(req.params.id2)){
-      res.send('Range not possible!');
-    }
-
-    if(id1 > jsonFile.length || id2 > jsonFile.length){
-      res.send('Range not possible!');
+    if(id1 > jsonFile.length || id2 > jsonFile.length || parseInt(req.params.id1) > parseInt(req.params.id2)){
+      res.send({status: 'Range not possible!'});
+      return;
     }
 
     var items = [];
@@ -126,12 +124,21 @@ app.get('/properties/:num', function(req, res){
 /******************************Post Requests******************************/
 
 app.post('/items', function(req, res){
-  if(Object.keys(req.body).length === 3 && req.body.name){
-    jsonFile.push(req.body);
-    res.send({status: 'Added country ' + req.body.name + ' to list'});
-  }
+  req.body.id = getMaxID() + 1;
   console.log(req.body);
+  jsonFile.push(req.body);
+  res.send({status: 'Added country ' + req.body.name + ' to list'});
 });
+
+function getMaxID(){
+  var maxID = 0;
+  for(var i = 0; i < jsonFile.length; i++){
+    if(jsonFile[i].id > maxID){
+      maxID = jsonFile[i].id;
+    }
+  }
+  return maxID;
+}
 
 /*****************************Delete Requests*****************************/
 
@@ -141,7 +148,7 @@ app.post('/items', function(req, res){
  */
 app.delete('/items', function(req, res){
   var deleted = jsonFile.pop();
-  res.send({status: 'Deleted last country: ' + deleted.name + '!'});
+  res.status(200).send('Deleted last country: ' + deleted.name + '!');
 });
 
 /**
@@ -160,6 +167,7 @@ app.delete('/items/:id', function(req, res){
     }
   }
   res.send({status: 'Item ' + id + ' deleted successfully'});
+
 });
 
 

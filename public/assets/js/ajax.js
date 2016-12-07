@@ -10,22 +10,11 @@ var COUNTRY_COLUMN_KEYS = [
 
 
 $(document).ready(
-  $.ajax({
-    type: 'GET',
-    url: '/items',
-    success:function(countries){
-      fillTable(countries);
-      applyTableHeadClasses();
-      properties();
-    },
-    error:function(countries){
-      errorOccured();
-    }
-  })
+  loadAllCountries
 );
 
 
-$('#add_submit').click(function(event){
+$('#filter_submit').click(function(event){
   event.preventDefault()
   var id = $('#country_filter_id')[0].value;
   var idRange = $('#country_filter_range')[0].value.split('-');
@@ -55,6 +44,42 @@ $('#add_submit').click(function(event){
       error:function(countries){
         errorOccured;
       }
+  })
+})
+
+$('#add_submit').click(function(event){
+  event.preventDefault();
+  var name = $('#country_name').val();
+  var birthRate = parseFloat($('#country_birth').val());
+  var cellphone = parseFloat($('#country_cellphone').val());
+  var country = {
+    "name": name,
+    "birth rate per 1000": birthRate,
+    "cell phones per 100": cellphone,
+    "children per woman": Math.random() * 2000,
+    "electricity consumption per capita": Math.random() * 2000,
+    "gdp_per_capita": Math.random() * 2000,
+    "gdp_per_capita_growth": Math.random() * 2000,
+    "inflation annual": Math.random() * 2000,
+    "internet user per 100": Math.random() * 2000,
+    "life expectancy": Math.random() * 2000,
+    "military expenditure percent of gdp": Math.random() * 2000,
+    "gps_lat": Math.random() * 2000,
+    "gps_long": Math.random() * 2000
+  }
+  console.log(birthRate);
+  $.ajax({
+    type: 'POST',
+    url: '/items',
+    data: JSON.stringify(country),
+    contentType: "application/json; charset=utf-8",
+    success:function(countries){
+      console.log(country);
+      loadAllCountries();
+    },
+    error:function(){
+      console.log('didnt work');
+    }
   })
 })
 
@@ -121,18 +146,32 @@ $('#rm_submit').click(function(event){
     request += '/' + countryID
     console.log(request);
   }
-    $.ajax({
-      type: 'DELETE',
-      url: request,
-      dataType: 'json',
-      success:function(countries){
-        fillTable(countries);
-      },
-      error:function(countries){
-        errorOccured();
-      }
-    })
+  $.ajax({
+    type: 'DELETE',
+    url: request,
+    success:function(res){
+      loadAllCountries();
+    },
+    error:function(res){
+      errorOccured();
+    }
+  })
 })
+
+function loadAllCountries(){
+  $.ajax({
+    type: 'GET',
+    url: '/items',
+    success:function(countries){
+      fillTable(countries);
+      applyTableHeadClasses();
+      properties();
+    },
+    error:function(countries){
+      errorOccured();
+    }
+  })
+}
 
 
 function fillTable(countries){
