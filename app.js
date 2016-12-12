@@ -122,7 +122,10 @@ app.get('/properties/:num', function(req, res){
 
 
 /******************************Post Requests******************************/
-
+/**
+ * post request for adding a country
+ * @type {POST}
+ */
 app.post('/items', function(req, res){
   req.body.id = getMaxID() + 1;
   console.log(req.body);
@@ -130,6 +133,10 @@ app.post('/items', function(req, res){
   res.send({status: 'Added country ' + req.body.name + ' to list'});
 });
 
+/**
+ * retrieving the highest id from the country
+ * @return {maxID}
+ */
 function getMaxID(){
   var maxID = 0;
   for(var i = 0; i < jsonFile.length; i++){

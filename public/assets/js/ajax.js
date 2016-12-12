@@ -1,3 +1,7 @@
+/**
+ * Country Table Identifier
+ * @type {Array}
+ */
 var COUNTRY_COLUMN_KEYS = [
   'id',
   'name',
@@ -8,12 +12,18 @@ var COUNTRY_COLUMN_KEYS = [
   'internet user per 100'
  ]
 
-
+/**
+ * Default Method for initial website call
+ */
 $(document).ready(
   loadAllCountries
 );
 
-
+/**
+ * filtering the countries for a specific id
+ * or for an id range
+ * @type {countries}
+ */
 $('#filter_submit').click(function(event){
   event.preventDefault()
   var id = $('#country_filter_id')[0].value;
@@ -47,6 +57,10 @@ $('#filter_submit').click(function(event){
   })
 })
 
+/**
+ * adding a country to the table
+ * @type {[type]}
+ */
 $('#add_submit').click(function(event){
   event.preventDefault();
   var name = $('#country_name').val();
@@ -83,7 +97,10 @@ $('#add_submit').click(function(event){
   })
 })
 
-
+/**
+ * returning all properties
+ * @return {properties}
+ */
 function properties(){
   $.ajax({
     type: 'GET',
@@ -99,7 +116,10 @@ function properties(){
   })
 }
 
-
+/**
+ * making the the table columns visible via css
+ * @return {void}
+ */
 function showProperties(){
   var propValue = $('#prop_selection').val().replace(/ /g, "");
   var column = $('.' + propValue)
@@ -108,7 +128,10 @@ function showProperties(){
   }
 };
 
-
+/**
+ * making the the table columns invisible via css
+ * @return {void}
+ */
 function hideProperties(){
   var propValue = $('#prop_selection').val().replace(/ /g, "");
   var column = $('.' + propValue)
@@ -117,7 +140,9 @@ function hideProperties(){
   }
 };
 
-
+/**
+ * adding a country
+ */
 function addCountry(){
   var name = $('#country_name').val();
   var brithRate = $('#country_birth').val();
@@ -137,7 +162,11 @@ function addCountry(){
   })
 };
 
-
+/**
+ * removing the last country
+ * or a country specified by its id
+ * @type {void}
+ */
 $('#rm_submit').click(function(event){
   event.preventDefault();
   var countryID = $('#country_delete_id').val();
@@ -158,6 +187,10 @@ $('#rm_submit').click(function(event){
   })
 })
 
+/**
+ * loading all countries via ajax
+ * @return {countries}
+ */
 function loadAllCountries(){
   $.ajax({
     type: 'GET',
@@ -173,7 +206,11 @@ function loadAllCountries(){
   })
 }
 
-
+/**
+ * filling the html table with countries
+ * @param  {json} countries [the countries which should be displayed]
+ * @return {void}
+ */
 function fillTable(countries){
   var table = $('#table_body');
   table.empty();
@@ -190,7 +227,10 @@ function fillTable(countries){
   }
 };
 
-
+/**
+ * applying css classes from the json properties
+ * @return {void}
+ */
 function applyTableHeadClasses(){
   var thead = $('#table_head').children();
   for(var i = 0; i < COUNTRY_COLUMN_KEYS.length; i++){
@@ -198,7 +238,9 @@ function applyTableHeadClasses(){
   }
 };
 
-
+/**
+ * error function for ajax
+ */
 function errorOccured(){
   var table = $('table_body');
   var message = $('<tr><td>An Error has occured please try again later.</td></tr>');
